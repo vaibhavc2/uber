@@ -4,9 +4,12 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const connectDb = require("./db/connect");
 const userRoutes = require("./routes/user.routes");
+const redisClient = require("./db/redis");
+const { errorMiddleware, notFoundMiddleware } = require("./middlewares/error.middleware");
 
 dotenv.config();
 connectDb();
+redisClient.connect();
 
 const app = express();
 
@@ -20,5 +23,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/users", userRoutes);
+
+// error handling middlewares
+app.use(notFoundMiddleware, errorMiddleware);
 
 module.exports = app;
