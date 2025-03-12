@@ -10,7 +10,7 @@ module.exports.createUser = async ({
     throw new Error("Missing required fields");
   }
   try {
-    const user = userModel.create({
+    const user = await userModel.create({
       fullName: {
         firstName,
         lastName,
@@ -18,6 +18,19 @@ module.exports.createUser = async ({
       email,
       password,
     });
+
+    return user;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+module.exports.findUserByEmail = async (email) => {
+  if (!email) {
+    throw new Error("Missing required fields");
+  }
+  try {
+    const user = await userModel.findOne({ email }).select("+password");
 
     return user;
   } catch (error) {
