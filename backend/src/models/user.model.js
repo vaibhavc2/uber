@@ -1,18 +1,20 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const { generateAuthToken, comparePassword, hashPassword } = require("../utils/schema.methods");
+
 
 const userSchema = new mongoose.Schema({
   fullName: {
     firstName: {
       type: String,
       required: [true, "First name is required"],
+      trim: true,
       minLength: [3, "First name must be at least 3 characters long"],
       maxLength: [50, "First name must be at most 50 characters long"],
     },
     lastName: {
       type: String,
       required: false,
+      trim: true,
       minLength: [3, "Last name must be at least 3 characters long"],
       maxLength: [50, "Last name must be at most 50 characters long"],
     },
@@ -29,6 +31,7 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
+    trim: true,
     required: [true, "Password is required"],
     select: false,
   },
@@ -36,24 +39,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-});
+}, { timestamps: true });
 
-userSchema.methods.generateAuthToken = function () {
-  return jwt.sign({ _id: this._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE,
-  });
-};
-
-userSchema.methods.comparePassword = async function (
-  candidatePassword,
-  userPassword
-) {
-  return await bcrypt.compare(candidatePassword, userPassword);
-};
-
-userSchema.statics.hashPassword = async function (password) {
-  return await bcrypt.hash(password, 10);
-};
+userSchema.methods.generateAuthToken = generateAuthToken;
+userSchema.methods.comparePassword = comparePassword;
+userSchema.statics.hashPassword = hashPassword;
 
 const User = mongoose.model("User", userSchema);
 

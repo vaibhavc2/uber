@@ -10,7 +10,7 @@ const authUser = async (req, res, next) => {
 
   try {
     const blackListed = await redisClient.get(token);
-    if (blackListed.toLowerCase().replace(/\s+/g, '') === "loggedout") {
+    if (blackListed?.toLowerCase().replace(/\s+/g, '') === "loggedout") {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
@@ -25,7 +25,7 @@ const authUser = async (req, res, next) => {
     req.token = token;
     next();
   } catch (error) {
-    return res.status(401).json({ message: "Unauthorized" });
+    next(error);
   }
 };
 
