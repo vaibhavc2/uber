@@ -3,10 +3,15 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const connectDb = require("./db/connect");
+const { apiVersionRoute } = require("./constants");
 const userRoutes = require("./routes/user.routes");
 const captainRoutes = require("./routes/captain.routes");
+const mapRoutes = require("./routes/map.routes");
 const redisClient = require("./db/redis");
-const { errorMiddleware, notFoundMiddleware } = require("./middlewares/error.middleware");
+const {
+  errorMiddleware,
+  notFoundMiddleware,
+} = require("./middlewares/error.middleware");
 
 // load environment variables
 dotenv.config();
@@ -24,13 +29,9 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 // routes
-app.get("/", (req, res) => {
-  res.send("Server is running!");
-});
-
-app.use("/api/v1/users", userRoutes);
-
-app.use("/api/v1/captains", captainRoutes);
+app.use(`${apiVersionRoute}/users`, userRoutes);
+app.use(`${apiVersionRoute}/captains`, captainRoutes);
+app.use(`${apiVersionRoute}/maps`, mapRoutes);
 
 // error handling middlewares
 app.use(notFoundMiddleware, errorMiddleware);

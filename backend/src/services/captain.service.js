@@ -45,7 +45,7 @@ module.exports.createCaptain = async ({
 
     return captain;
   } catch (error) {
-    throw new Error(error?.message);
+    throw new Error(error?.message || error);
   }
 };
 
@@ -59,6 +59,6 @@ module.exports.findCaptainByEmail = async (email) => {
 
     return captain;
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error(error?.message || error);
   }
 };
