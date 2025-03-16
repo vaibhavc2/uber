@@ -3,6 +3,7 @@ const userService = require("../services/user.service");
 const { validationResult } = require("express-validator");
 const redisClient = require("../db/redis");
 const { convertTime } = require("../utils/time");
+const ct = require("../constants");
 
 module.exports.registerUser = async (req, res, next) => {
   const errors = validationResult(req);
@@ -31,7 +32,7 @@ module.exports.registerUser = async (req, res, next) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: ct.env.NODE_ENV === "production",
     });
 
     res.status(201).json({
@@ -69,7 +70,7 @@ module.exports.loginUser = async (req, res, next) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: ct.env.NODE_ENV === "production",
     });
 
     res.status(200).json({
@@ -96,7 +97,7 @@ module.exports.logoutUser = async (req, res, next) => {
 
   try {
     await redisClient.set(token, "logged out", {
-      EX: convertTime(process.env.JWT_EXPIRE, "s"),
+      EX: convertTime(ct.env.JWT_EXPIRE, "s"),
     });
   } catch (error) {
     next(error);

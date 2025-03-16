@@ -3,6 +3,7 @@ const captainService = require("../services/captain.service");
 const { validationResult } = require("express-validator");
 const redisClient = require("../db/redis");
 const { convertTime } = require("../utils/time");
+const ct = require("../constants");
 
 module.exports.registerCaptain = async (req, res, next) => {
   const errors = validationResult(req);
@@ -30,7 +31,7 @@ module.exports.registerCaptain = async (req, res, next) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: ct.env.NODE_ENV === "production",
     });
 
     res.status(201).json({
@@ -59,10 +60,7 @@ module.exports.loginCaptain = async (req, res, next) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const isMatch = await captain.comparePassword(
-      password,
-      captain.password
-    );
+    const isMatch = await captain.comparePassword(password, captain.password);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
@@ -71,7 +69,7 @@ module.exports.loginCaptain = async (req, res, next) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: ct.env.NODE_ENV === "production",
     });
 
     return res.status(200).json({
@@ -107,7 +105,7 @@ module.exports.logoutCaptain = async (req, res, next) => {
 
   try {
     await redisClient.set(token, "logged out", {
-      EX: convertTime(process.env.JWT_EXPIRE, "s"),
+      EX: convertTime(ct.env.JWT_EXPIRE, "s"),
     });
   } catch (error) {
     next(error);

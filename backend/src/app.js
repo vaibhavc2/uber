@@ -1,5 +1,7 @@
+// load environment variables
+require("dotenv").config();
+
 const express = require("express");
-const dotenv = require("dotenv");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const connectDb = require("./db/connect");
@@ -12,9 +14,6 @@ const {
   errorMiddleware,
   notFoundMiddleware,
 } = require("./middlewares/error.middleware");
-
-// load environment variables
-dotenv.config();
 
 // connect to MongoDB and Redis
 connectDb();

@@ -1,8 +1,9 @@
 const axios = require("axios");
 const captainModel = require("../models/captain.model");
-const { googleMapsUri } = require("../constants");
+const ct = require("../constants");
 
-const apiKey = process.env.GOOGLE_MAPS_API;
+const apiKey = ct.env.GOOGLE_MAPS_API;
+const googleMapsUri = ct.googleMapsUri;
 
 module.exports.getAddressCoordinate = async (address) => {
   const url = `${googleMapsUri}/geocode/json?address=${encodeURIComponent(
@@ -18,7 +19,9 @@ module.exports.getAddressCoordinate = async (address) => {
         lng: location.lng,
       };
     } else {
-      throw new Error(response.data.message || "Unable to fetch coordinates");
+      throw new Error(
+        response.data?.error_message || "Unable to fetch coordinates"
+      );
     }
   } catch (error) {
     throw new Error(error?.message || error);
@@ -43,7 +46,9 @@ module.exports.getDistanceTime = async (origin, destination) => {
 
       return response.data.rows[0].elements[0];
     } else {
-      throw new Error("Unable to fetch distance and time");
+      throw new Error(
+        response.data?.error_message || "Unable to fetch distance and time"
+      );
     }
   } catch (error) {
     throw new Error(error?.message || error);
@@ -66,7 +71,9 @@ module.exports.getAutoCompleteSuggestions = async (input) => {
         .map((prediction) => prediction.description)
         .filter((value) => value);
     } else {
-      throw new Error("Unable to fetch suggestions");
+      throw new Error(
+        response.data?.error_message || "Unable to fetch suggestions"
+      );
     }
   } catch (error) {
     throw new Error(error?.message || error);

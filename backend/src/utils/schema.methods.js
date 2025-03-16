@@ -1,9 +1,10 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const ct = require("../constants");
 
 module.exports.generateAuthToken = function () {
-  return jwt.sign({ _id: this._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE,
+  return jwt.sign({ _id: this._id }, ct.env.JWT_SECRET, {
+    expiresIn: ct.env.JWT_EXPIRE,
   });
 };
 
