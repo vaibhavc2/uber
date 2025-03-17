@@ -21,7 +21,7 @@ module.exports.createUser = async ({
 
     return user;
   } catch (error) {
-    throw new Error(error?.message || error);
+    throw new Error(error);
   }
 };
 
@@ -34,6 +34,6 @@ module.exports.findUserByEmail = async (email) => {
 
     return user;
   } catch (error) {
-    throw new Error(error?.message || error);
+    throw new Error(error);
   }
 };

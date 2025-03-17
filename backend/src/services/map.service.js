@@ -24,7 +24,7 @@ module.exports.getAddressCoordinate = async (address) => {
       );
     }
   } catch (error) {
-    throw new Error(error?.message || error);
+    throw new Error(error);
   }
 };
 
@@ -51,7 +51,7 @@ module.exports.getDistanceTime = async (origin, destination) => {
       );
     }
   } catch (error) {
-    throw new Error(error?.message || error);
+    throw new Error(error);
   }
 };
 
@@ -76,7 +76,7 @@ module.exports.getAutoCompleteSuggestions = async (input) => {
       );
     }
   } catch (error) {
-    throw new Error(error?.message || error);
+    throw new Error(error);
   }
 };
 
@@ -97,6 +97,6 @@ module.exports.getCaptainsInTheRadius = async (ltd, lng, radius) => {
 
     return captains;
   } catch (error) {
-    throw new Error(error?.message || error);
+    throw new Error(error);
   }
 };
