@@ -2,7 +2,7 @@ const rideModel = require("../models/ride.model");
 const { getOtp } = require("../utils/otp");
 const mapService = require("./map.service");
 
-module.exports.getFare = async ({ pickup, destination }) => {
+const getFare = async ({ pickup, destination }) => {
   if (!pickup || !destination) {
     throw new Error("Pickup and destination are required");
   }
@@ -51,6 +51,8 @@ module.exports.getFare = async ({ pickup, destination }) => {
     throw new Error(error);
   }
 };
+
+module.exports.getFare = getFare;
 
 module.exports.createRide = async ({
   user,
