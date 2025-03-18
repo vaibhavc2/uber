@@ -24,10 +24,8 @@ router.post(
       .isInt({ min: 1 })
       .withMessage("Capacity must be atleast 1 passenger"),
     body("vehicle.vehicleType")
-      .isIn(["car", "motorcycle", "auto"])
-      .withMessage(
-        "Vehicle type must be either 'car' or 'motorcycle' or 'auto'"
-      ),
+      .isIn(["car", "moto", "auto"])
+      .withMessage("Vehicle type must be either 'car' or 'moto' or 'auto'"),
     body("vehicle.make")
       .isLength({ min: 1, max: 50 })
       .withMessage("Make must be between 1 and 50 characters long"),

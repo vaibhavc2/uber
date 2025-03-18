@@ -9,6 +9,7 @@ const { apiVersionRoute } = require("./constants");
 const userRoutes = require("./routes/user.routes");
 const captainRoutes = require("./routes/captain.routes");
 const mapRoutes = require("./routes/map.routes");
+const rideRoutes = require("./routes/ride.routes");
 const redisClient = require("./db/redis");
 const {
   errorMiddleware,
@@ -31,6 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(`${apiVersionRoute}/users`, userRoutes);
 app.use(`${apiVersionRoute}/captains`, captainRoutes);
 app.use(`${apiVersionRoute}/maps`, mapRoutes);
+app.use(`${apiVersionRoute}/rides`, rideRoutes);
 
 // error handling middlewares
 app.use(notFoundMiddleware, errorMiddleware);
